@@ -50,6 +50,9 @@ def test_snapshot_expires_when_a_parameter_generation_moves(console, services):
 def test_verdict_history_is_reported_per_subject(console, services):
     assert services.state.histories() == (
         "broke.handling",
+        "cal.nip.nip1",
+        "cal.nip.nip2",
+        "cal.nip.nip3",
         "glue.concentration",
         "press.dryness",
         "steam.pressure",

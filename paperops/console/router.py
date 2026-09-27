@@ -110,6 +110,7 @@ ROUTES: tuple[tuple[str, str, Handler], ...] = (
     ("POST", "/api/glue/concentration", operations.glue_concentration),
     ("GET", "/api/cal/state", handlers.cal_state),
     ("GET", "/api/cal/model", handlers.cal_model),
+    ("GET", "/api/cal/roll", handlers.cal_roll),
     ("POST", "/api/cal/speed", operations.cal_speed),
     ("POST", "/api/cal/nip", operations.cal_nip),
     ("GET", "/api/reel/state", handlers.reel_state),

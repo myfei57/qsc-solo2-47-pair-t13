@@ -8,7 +8,9 @@ def prepare_nip(console) -> None:
     ok(console, "POST", "/api/press/persist", {"speed": 900})
     ok(console, "POST", "/api/dry/speed", {"speed": 900})
     ok(console, "POST", "/api/cal/speed", {"speed": 900, "target": 900})
-    ok(console, "POST", "/api/cal/nip", {"closed": True, "pressure": 60})
+    ok(console, "POST", "/api/cal/nip", {"nip": "nip1", "pressure": 60, "thickness": 0.094})
+    ok(console, "POST", "/api/cal/nip", {"nip": "nip2", "pressure": 60, "thickness": 0.083})
+    ok(console, "POST", "/api/cal/nip", {"nip": "nip3", "pressure": 60, "thickness": 0.073})
 
 
 def test_transfer_walks_through_every_stage(console, services):

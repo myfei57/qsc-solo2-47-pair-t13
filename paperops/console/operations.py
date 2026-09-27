@@ -200,9 +200,14 @@ def cal_nip(console: Any, request: Request) -> Response:
     body = request.body()
     if body.get("closed", True):
         return json_response(
-            console.services.cal.close_nip(console.services.dry, body["pressure"])
+            console.services.cal.close_nip(
+                console.services.dry,
+                body["nip"],
+                body["pressure"],
+                body["thickness"],
+            )
         )
-    return json_response(console.services.cal.open_nip())
+    return json_response(console.services.cal.open_nip(body["nip"]))
 
 
 def reel_change(console: Any, request: Request) -> Response:

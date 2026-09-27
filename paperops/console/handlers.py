@@ -299,6 +299,14 @@ def cal_state(console: Any, request: Request) -> Response:
     return json_response(console.services.cal.view().to_dict())
 
 
+def cal_roll(console: Any, request: Request) -> Response:
+    cal = console.services.cal
+    spool_id = request.param("spool_id")
+    if spool_id is None:
+        return json_response({"rolls": list(cal.rolls())})
+    return json_response(cal.roll_verdicts(spool_id))
+
+
 def cal_model(console: Any, request: Request) -> Response:
     cal = console.services.cal
     return json_response(

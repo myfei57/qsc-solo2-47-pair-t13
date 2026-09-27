@@ -39,7 +39,9 @@
       ["干燥曲线就绪", (s) => s.dry.generation > 0],
       ["施胶辊抬起", (s) => s.glue.roll_lifted],
       ["浓度报警", (s) => s.glue.alarm],
-      ["压区闭合", (s) => s.cal.nip_closed],
+      ["压区一道闭合", (s) => s.cal.nips[0].closed],
+      ["压区二道闭合", (s) => s.cal.nips[1].closed],
+      ["压区三道闭合", (s) => s.cal.nips[2].closed],
       ["新轴投入", (s) => s.reel.spool_loaded],
       ["损纸闩锁", (s) => s.broke.latched],
       ["水份映射就绪", (s) => s.water.generation > 0]

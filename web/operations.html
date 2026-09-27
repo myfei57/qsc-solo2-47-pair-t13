@@ -54,13 +54,18 @@
     <h1>压光与卷取</h1>
     <label>车速 <input id="calSpeed" value="900"></label>
     <label>压区压力 <input id="nip" value="60"></label>
+    <label>厚度 <input id="thick" value="0.094"></label>
     <label>新轴号 <input id="spool" value="S-2048"></label>
     <button onclick="post('/api/cal/speed', {speed: num('calSpeed'), target: num('calSpeed')})">设定车速</button>
-    <button onclick="post('/api/cal/nip', {closed: true, pressure: num('nip')})">闭合压区</button>
+    <button onclick="post('/api/cal/nip', {nip: 'nip1', pressure: num('nip'), thickness: num('thick')})">闭合一道</button>
+    <button onclick="post('/api/cal/nip', {nip: 'nip2', pressure: num('nip'), thickness: num('thick')})">闭合二道</button>
+    <button onclick="post('/api/cal/nip', {nip: 'nip3', pressure: num('nip'), thickness: num('thick')})">闭合三道</button>
+    <button onclick="post('/api/cal/nip', {nip: 'nip1', closed: false})">打开压区</button>
     <button onclick="post('/api/reel/change', {reason: 'full spool'})">触发换卷</button>
     <button onclick="post('/api/reel/spool', {spool_id: document.getElementById('spool').value})">投入新轴</button>
     <button onclick="post('/api/reel/retract', {})">退旧轴</button>
     <button onclick="post('/api/reel/bite', {})">咬纸</button>
+    <button onclick="get('/api/cal/roll?spool_id=' + document.getElementById('spool').value)">查卷判定</button>
   </section>
   <section>
     <h1>损纸处理</h1>
@@ -80,6 +85,10 @@
     const out = document.getElementById("out");
     async function post(path, body) {
       const response = await fetch(path, {method: "POST", body: JSON.stringify(body)});
+      out.textContent = path + " -> " + response.status + "\n" + JSON.stringify(await response.json(), null, 2);
+    }
+    async function get(path) {
+      const response = await fetch(path);
       out.textContent = path + " -> " + response.status + "\n" + JSON.stringify(await response.json(), null, 2);
     }
   </script>

@@ -99,6 +99,7 @@ def build_services(config: Config) -> Services:
             "glue.concentration": glue.history(),
             "broke.handling": broke.history(),
             "water.moisture": water.history(),
+            **cal.nip_histories(),
         },
     )
 
@@ -126,6 +127,7 @@ def build_services(config: Config) -> Services:
     dry.wire()
     glue.wire()
     water.wire()
+    cal.wire()
     audit.wire()
     state.wire()
     services.console = Console(services)
