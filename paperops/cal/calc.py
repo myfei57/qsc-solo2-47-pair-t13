@@ -25,3 +25,17 @@ def nip_verdict(load: float, low: float, high: float) -> str:
     if load > high:
         return "heavy"
     return "in_band"
+
+
+THIN = "thin"
+THICK = "thick"
+IN_BAND = "in_band"
+
+
+def thickness_verdict(thickness: float, low: float, high: float) -> str:
+    """Classify a measured calendered thickness against the zone's target range."""
+    if thickness < low:
+        return THIN
+    if thickness > high:
+        return THICK
+    return IN_BAND

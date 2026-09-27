@@ -299,19 +299,41 @@ def cal_state(console: Any, request: Request) -> Response:
     return json_response(console.services.cal.view().to_dict())
 
 
-def cal_model(console: Any, request: Request) -> Response:
+def cal_procedure(console: Any, request: Request) -> Response:
+    return json_response(console.services.cal.procedure())
+
+
+def cal_zones(console: Any, request: Request) -> Response:
     cal = console.services.cal
+    zone = request.param("zone")
+    if zone:
+        return json_response(cal.zone_view(zone).to_dict())
     return json_response(
         {
-            "nip_load": cal.nip_load(request.number("width", 6.0)),
-            "nip_impulse": cal.nip_impulse(request.number("dwell", 0.05)),
-            "speed_difference": cal.speed_difference(),
-            "settled": cal.settled(request.number("tolerance", 1.0)),
-            "nip_verdict": cal.nip_verdict(),
-            "load": cal.load(),
-            "verdict": cal.verdict(),
+            "zones": [view.to_dict() for view in cal.view().zones],
+            "procedure": cal.procedure(),
+            "spool_id": cal.active_spool(),
         }
     )
+
+
+def cal_model(console: Any, request: Request) -> Response:
+    cal = console.services.cal
+    body = {
+        "nip_load": cal.nip_load(request.number("width", 6.0)),
+        "nip_impulse": cal.nip_impulse(request.number("dwell", 0.05)),
+        "speed_difference": cal.speed_difference(),
+        "settled": cal.settled(request.number("tolerance", 1.0)),
+        "nip_verdict": cal.nip_verdict(),
+        "load": cal.load(),
+        "verdict": cal.verdict(),
+        "zones": [view.to_dict() for view in cal.view().zones],
+        "next_zone": cal.procedure()["next"],
+    }
+    spool_id = request.param("spool_id")
+    if spool_id:
+        body["reel"] = cal.spool_verdict(spool_id)
+    return json_response(body)
 
 
 def reel_state(console: Any, request: Request) -> Response:

@@ -19,6 +19,8 @@ TOPIC_GLUE_CONC_SET = "glue.concentration.set"
 
 TOPIC_CAL_NIP = "cal.nip.changed"
 TOPIC_CAL_SPEED = "cal.speed.changed"
+TOPIC_CAL_ZONE = "cal.zone.changed"
+TOPIC_CAL_REEL = "cal.reel.frozen"
 
 TOPIC_REEL_PROCEDURE = "reel.procedure.changed"
 TOPIC_REEL_SPOOL = "reel.spool.changed"
@@ -49,6 +51,8 @@ ALL_TOPICS: tuple[str, ...] = (
     TOPIC_GLUE_CONC_SET,
     TOPIC_CAL_NIP,
     TOPIC_CAL_SPEED,
+    TOPIC_CAL_ZONE,
+    TOPIC_CAL_REEL,
     TOPIC_REEL_PROCEDURE,
     TOPIC_REEL_SPOOL,
     TOPIC_BROKE_PROCEDURE,

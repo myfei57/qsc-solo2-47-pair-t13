@@ -53,14 +53,29 @@
   <section>
     <h1>压光与卷取</h1>
     <label>车速 <input id="calSpeed" value="900"></label>
-    <label>压区压力 <input id="nip" value="60"></label>
-    <label>新轴号 <input id="spool" value="S-2048"></label>
     <button onclick="post('/api/cal/speed', {speed: num('calSpeed'), target: num('calSpeed')})">设定车速</button>
-    <button onclick="post('/api/cal/nip', {closed: true, pressure: num('nip')})">闭合压区</button>
+    <div style="margin-top:8px">
+      <label>压区
+        <select id="zone">
+          <option value="nip1">第一道 nip1（目标 0.110–0.130）</option>
+          <option value="nip2">第二道 nip2（目标 0.090–0.108）</option>
+          <option value="nip3">第三道 nip3（目标 0.072–0.088）</option>
+        </select>
+      </label>
+      <label>压力 <input id="zpressure" value="60"></label>
+      <label>测厚 <input id="thickness" value="0.120"></label>
+      <button onclick="zoneAction('close')">闭合该压区</button>
+      <button onclick="zoneAction('measure')">送厚度判定</button>
+      <button onclick="zoneAction('open')">打开该压区</button>
+      <button onclick="get('/api/cal/zones')">刷新压区状态</button>
+    </div>
+    <label>新轴号 <input id="spool" value="S-2048"></label>
+    <label>回溯轴号 <input id="lookup" value="S-2048"></label>
     <button onclick="post('/api/reel/change', {reason: 'full spool'})">触发换卷</button>
     <button onclick="post('/api/reel/spool', {spool_id: document.getElementById('spool').value})">投入新轴</button>
     <button onclick="post('/api/reel/retract', {})">退旧轴</button>
     <button onclick="post('/api/reel/bite', {})">咬纸</button>
+    <button onclick="get('/api/cal/reel?spool_id=' + encodeURIComponent(document.getElementById('lookup').value))">查该卷各压区判定</button>
   </section>
   <section>
     <h1>损纸处理</h1>
@@ -78,9 +93,26 @@
   <script>
     const num = (id) => Number(document.getElementById(id).value);
     const out = document.getElementById("out");
+    function show(path, status, body) {
+      out.textContent = path + " -> " + status + "\n" + JSON.stringify(body, null, 2);
+    }
     async function post(path, body) {
       const response = await fetch(path, {method: "POST", body: JSON.stringify(body)});
-      out.textContent = path + " -> " + response.status + "\n" + JSON.stringify(await response.json(), null, 2);
+      show(path, response.status, await response.json());
+    }
+    async function get(path) {
+      const response = await fetch(path);
+      show(path, response.status, await response.json());
+    }
+    function zoneAction(action) {
+      const zone = document.getElementById("zone").value;
+      if (action === "close") {
+        post("/api/cal/zone/close", {zone, pressure: num("zpressure")});
+      } else if (action === "measure") {
+        post("/api/cal/zone/measure", {zone, thickness: num("thickness")});
+      } else {
+        post("/api/cal/zone/open", {zone});
+      }
     }
   </script>
 </body>

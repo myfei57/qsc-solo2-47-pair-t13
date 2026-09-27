@@ -19,6 +19,9 @@ GLUE_CONC = "glue/concentration"
 
 CAL_NIP = "cal/nip"
 CAL_SPEED = "cal/speed"
+CAL_ZONE = "cal/zone"
+
+CAL_REEL_PREFIX = "cal/reel/"
 
 REEL_PROCEDURE = "reel/procedure"
 REEL_SPOOL = "reel/spool"
@@ -51,3 +54,11 @@ def artifact_key(kind: str, name: str) -> str:
 
 def batch_key(batch_id: str) -> str:
     return BATCH_PREFIX + batch_id
+
+
+def cal_zone_key(zone: str) -> str:
+    return CAL_ZONE + "/" + zone
+
+
+def cal_reel_key(spool_id: str) -> str:
+    return CAL_REEL_PREFIX + spool_id

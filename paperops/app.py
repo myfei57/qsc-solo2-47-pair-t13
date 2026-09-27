@@ -128,5 +128,6 @@ def build_services(config: Config) -> Services:
     water.wire()
     audit.wire()
     state.wire()
+    cal.wire()
     services.console = Console(services)
     return services

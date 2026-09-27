@@ -197,12 +197,39 @@ def cal_speed(console: Any, request: Request) -> Response:
 
 
 def cal_nip(console: Any, request: Request) -> Response:
+    """Legacy coarse control: close or open the first nip of the stack."""
     body = request.body()
     if body.get("closed", True):
         return json_response(
             console.services.cal.close_nip(console.services.dry, body["pressure"])
         )
     return json_response(console.services.cal.open_nip())
+
+
+def cal_zone_close(console: Any, request: Request) -> Response:
+    body = request.body()
+    return json_response(
+        console.services.cal.close_zone(
+            body["zone"], console.services.dry, body["pressure"]
+        )
+    )
+
+
+def cal_zone_measure(console: Any, request: Request) -> Response:
+    body = request.body()
+    return json_response(
+        console.services.cal.measure_zone(body["zone"], body["thickness"])
+    )
+
+
+def cal_zone_open(console: Any, request: Request) -> Response:
+    body = request.body()
+    return json_response(console.services.cal.open_zone(body.get("zone")))
+
+
+def cal_reel_verdict(console: Any, request: Request) -> Response:
+    spool_id = request.param("spool_id", "") or ""
+    return json_response(console.services.cal.spool_verdict(spool_id))
 
 
 def reel_change(console: Any, request: Request) -> Response:
